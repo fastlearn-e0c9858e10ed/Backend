@@ -4,7 +4,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 @app.get("/")
-def read_root():
+def read_root() -> dict[str, str]:
     return {"Hello": "World"}
 
 # Run the application using 'uvicorn' if this script is run directly
