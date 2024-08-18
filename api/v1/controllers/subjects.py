@@ -85,5 +85,18 @@ async def update_subject(request: Request, subject_id: str, update_subject: Upda
     }
 
 
-async def delete_subject(subject_id: str) -> JSONResponse:
-    return JSONResponse(content={"message": f"delete_subject for {subject_id}"})
+async def delete_subject(request: Request, subject_id: str) -> JSONResponse:  # noqa: ARG001
+    db: Session = SessionLocal()
+
+    # Find the subject to delete
+    subject = db.query(Subject).filter(Subject.id == subject_id).first()
+    if subject is None:
+        db.close()
+        raise HTTPException(status_code=404, detail="Subject not found")
+
+    # Delete the subject
+    db.delete(subject)
+    db.commit()
+    db.close()
+
+    return JSONResponse(content={"message": "Subject deleted successfully"})
