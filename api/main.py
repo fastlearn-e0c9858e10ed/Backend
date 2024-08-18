@@ -1,7 +1,12 @@
 # app/main.py
 from fastapi import FastAPI
 
+from api.v1.routes import routes
+
 app = FastAPI()
+
+# Include the routes from the api/v1/routes/routes.py file
+app.include_router(routes.router, prefix="/api/v1")
 
 @app.get("/")
 def read_root() -> dict[str, str]:

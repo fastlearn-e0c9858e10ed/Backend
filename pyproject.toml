@@ -76,6 +76,7 @@ ignore = [
     "COM812", # trailing commas
     "ISC001", # implicit string concatenation.
     "S101", # block assert
+    "N812",
 ]
 
 [tool.ruff]
