@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from fastapi import Request
+from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from api.core.config import SessionLocal
@@ -27,8 +27,19 @@ async def get_all_subjects(request: Request) -> JSONResponse:  # noqa: ARG001
     ]
 
 
-async def get_subject_by_id(subject_id: str) -> JSONResponse:
-    return JSONResponse(content={"message": f"get_subject_by_id for {subject_id}"})
+async def get_subject_by_id(request: Request, subject_id: str) -> JSONResponse:  # noqa: ARG001
+    db: Session = SessionLocal()
+    subject = db.query(Subject).filter(Subject.id == subject_id).first()
+    db.close()
+
+    if subject is None:
+        raise HTTPException(status_code=404, detail="Subject not found")
+
+    return {
+        "id": subject.id,
+        "name": subject.name,
+        "code": subject.code
+    }
 
 
 async def add_subject(request: Request, subject_create: SubjectCreate) -> JSONResponse:  # noqa: ARG001
