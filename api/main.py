@@ -1,12 +1,19 @@
 # app/main.py
 from fastapi import FastAPI
 
+from api.core.config import engine
+from api.models.models import Base
 from api.v1.routes import routes
 
 app = FastAPI()
 
 # Include the routes from the api/v1/routes/routes.py file
 app.include_router(routes.router, prefix="/api/v1")
+
+# Create tables
+@app.on_event("startup")
+def on_startup() -> None:
+    Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def read_root() -> dict[str, str]:
