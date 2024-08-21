@@ -12,7 +12,7 @@ router.get("/")(PastPaperController.root)
 router.get("/pastpapers")(PastPaperController.get_all_pastpapers)
 
 # /api/v1/pastpapers/subject/{subject} -> GET
-router.get("/pastpapers/subject/{subject}")(PastPaperController.get_pastpapers_by_subject)
+router.get("/pastpapers/subject/{subject_id}")(PastPaperController.get_pastpapers_by_subject)
 
 # /api/v1/pastpapers/{pastpaper_id} -> GET
 router.get("/pastpapers/{pastpaper_id}")(PastPaperController.get_pastpaper)
@@ -20,11 +20,11 @@ router.get("/pastpapers/{pastpaper_id}")(PastPaperController.get_pastpaper)
 # /api/v1/pastpapers -> POST
 router.post("/pastpapers")(PastPaperController.add_pastpaper)
 
-# /api/v1/pastpapers/{pastpaper_id} -> PUT
-router.put("/pastpapers/{pastpaper_id}")(PastPaperController.update_pastpaper)
+# # /api/v1/pastpapers/{pastpaper_id} -> PUT
+# router.put("/pastpapers/{pastpaper_id}")(PastPaperController.update_pastpaper)
 
-# /api/v1/pastpapers/{pastpaper_id} -> DELETE
-router.delete("/pastpapers/{pastpaper_id}")(PastPaperController.delete_pastpaper)
+# # /api/v1/pastpapers/{pastpaper_id} -> DELETE
+# router.delete("/pastpapers/{pastpaper_id}")(PastPaperController.delete_pastpaper)
 
 # /api/v1/subjects -> GET
 router.get("/subjects")(Subjects.get_all_subjects)

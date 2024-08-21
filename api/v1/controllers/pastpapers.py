@@ -32,7 +32,7 @@ async def get_all_pastpapers(request: Request) -> JSONResponse:
             "semester": past_paper.semester.value,  # Enum values need to be converted to their underlying value
             "date": past_paper.date.isoformat(),  # Convert the date object to a string
             "subject_id": past_paper.subject_id,
-            "url": str(request.url_for("get_pastpaper", pastpaper_id= past_paper.id))  # Assuming the file is stored with this naming convention
+            "url": str(request.url_for("get_pastpaper_pdf", pastpaper_id= past_paper.id))  # Assuming the file is stored with this naming convention
         } for past_paper in past_papers]
 
     return JSONResponse(content=pastpapers)
@@ -52,7 +52,7 @@ async def get_pastpaper(request: Request, pastpaper_id: str) -> JSONResponse:
             "semester": past_paper.semester.value,  # Convert Enum to its value
             "date": past_paper.date.isoformat(),  # Convert date object to ISO format
             "subject_id": past_paper.subject_id,
-            "url": str(request.url_for("get_pastpaper", pastpaper_id= past_paper.id))  # URL to the past paper
+            "url": str(request.url_for("get_pastpaper_pdf", pastpaper_id=past_paper.id))  # URL to the past paper
         }
         return JSONResponse(content=pastpaper_data)
     return JSONResponse(status_code=404, content={"message": "Past paper not found"})
@@ -108,13 +108,23 @@ async def add_pastpaper(
     }
 
 
-async def update_pastpaper(pastpaper_id: str) -> JSONResponse:
-    return JSONResponse(content={"message": f"update_pastpaper for {pastpaper_id}"})
+async def get_pastpapers_by_subject(request: Request, subject_id: str) -> JSONResponse:
+    db: Session = SessionLocal()
+    past_papers = db.query(PastPaper).filter(PastPaper.subject_id == subject_id).all()
+    db.close()
 
+    if past_papers:
+        pastpapers_data = [{
+            "id": past_paper.id,
+            "year": past_paper.year,
+            "type": past_paper.type.value,  # Convert Enum to its value
+            "session": past_paper.session.value,  # Convert Enum to its value
+            "semester": past_paper.semester.value,  # Convert Enum to its value
+            "date": past_paper.date.isoformat(),  # Convert date object to ISO format
+            "subject_id": past_paper.subject_id,
+            "url": str(request.url_for("get_pastpaper_pdf", pastpaper_id=past_paper.id))  # URL to the past paper
+        } for past_paper in past_papers]
 
-async def delete_pastpaper(pastpaper_id: str) -> JSONResponse:
-    return JSONResponse(content={"message": f"delete_pastpaper for {pastpaper_id}"})
+        return JSONResponse(content=pastpapers_data)
+    return JSONResponse(status_code=404, content={"message": "No past papers found for this subject"})
 
-
-async def get_pastpapers_by_subject(subject: str) -> JSONResponse:
-    return JSONResponse(content={"message": f"get_pastpapers_by_subject for {subject}"})

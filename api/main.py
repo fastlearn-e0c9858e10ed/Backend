@@ -26,7 +26,7 @@ def read_root() -> dict[str, str]:
     return {"Hello": "World"}
 
 @app.get("/uploads/pastpapers/{pastpaper_id}.pdf")
-async def get_pastpaper(pastpaper_id: str) -> FileResponse:
+async def get_pastpaper_pdf(pastpaper_id: str) -> FileResponse:
     file_path = Directory.PASTPAPERS_DIR / f"{pastpaper_id}.pdf"
 
     if not file_path.is_file():
