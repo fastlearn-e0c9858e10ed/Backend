@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 from api.constants.directory import Directory
 from api.core.config import SessionLocal
+from api.models.models import PastPaper
 from api.services.database import store_past_paper_in_db
 from api.utils.upload_helpers import save_pdf_file
 
@@ -17,8 +18,24 @@ async def root() -> JSONResponse:
     return JSONResponse(content={"message": "/api/v1"})
 
 
-async def get_all_pastpapers_metadata() -> JSONResponse:
-    return JSONResponse(content={"message": "get_all_pastpapers"})
+async def get_all_pastpapers(request: Request) -> JSONResponse:
+    db: Session = SessionLocal()
+    past_papers = db.query(PastPaper).all()
+    db.close()
+
+    # Convert the past papers to a list of dictionaries
+    pastpapers = [{
+            "id": past_paper.id,
+            "year": past_paper.year,
+            "type": past_paper.type.value,  # Enum values need to be converted to their underlying value
+            "session": past_paper.session.value,  # Enum values need to be converted to their underlying value
+            "semester": past_paper.semester.value,  # Enum values need to be converted to their underlying value
+            "date": past_paper.date.isoformat(),  # Convert the date object to a string
+            "subject_id": past_paper.subject_id,
+            "url": str(request.url_for("get_pastpaper", pastpaper_id= past_paper.id))  # Assuming the file is stored with this naming convention
+        } for past_paper in past_papers]
+
+    return JSONResponse(content=pastpapers)
 
 
 async def get_pastpaper_metadata(pastpaper_id: str) -> JSONResponse:

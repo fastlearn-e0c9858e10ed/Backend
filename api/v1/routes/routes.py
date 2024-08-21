@@ -9,7 +9,7 @@ router = APIRouter()
 router.get("/")(PastPaperController.root)
 
 # /api/v1/pastpapers -> GET
-router.get("/pastpapers")(PastPaperController.get_all_pastpapers_metadata)
+router.get("/pastpapers")(PastPaperController.get_all_pastpapers)
 
 # /api/v1/pastpapers/subject/{subject} -> GET
 router.get("/pastpapers/subject/{subject}")(PastPaperController.get_pastpapers_by_subject)
