@@ -15,7 +15,7 @@ router.get("/pastpapers")(PastPaperController.get_all_pastpapers)
 router.get("/pastpapers/subject/{subject}")(PastPaperController.get_pastpapers_by_subject)
 
 # /api/v1/pastpapers/{pastpaper_id} -> GET
-router.get("/pastpapers/{pastpaper_id}")(PastPaperController.get_pastpaper_metadata)
+router.get("/pastpapers/{pastpaper_id}")(PastPaperController.get_pastpaper)
 
 # /api/v1/pastpapers -> POST
 router.post("/pastpapers")(PastPaperController.add_pastpaper)
