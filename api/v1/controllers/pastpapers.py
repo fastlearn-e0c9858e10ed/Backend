@@ -60,7 +60,7 @@ async def get_pastpaper(request: Request, pastpaper_id: str) -> JSONResponse:
 
 
 async def add_pastpaper(
-    request: Request,  # noqa: ARG001
+    request: Request,
     year: int = Form(...),
     paper_type: str = Form(...),
     session: str = Form(...),
@@ -104,7 +104,8 @@ async def add_pastpaper(
         "session": past_paper.session,
         "semester": past_paper.semester,
         "date": past_paper.date,
-        "subject_id": past_paper.subject_id
+        "subject_id": past_paper.subject_id,
+        "url": str(request.url_for("get_pastpaper_pdf", pastpaper_id=past_paper.id))  # URL to the past paper
     }
 
 
