@@ -27,7 +27,7 @@ async def get_all_pastpapers(request: Request) -> JSONResponse:
     pastpapers = [{
             "id": past_paper.id,
             "year": past_paper.year,
-            "type": past_paper.type.value,  # Enum values need to be converted to their underlying value
+            "paper_type": past_paper.type.value,  # Enum values need to be converted to their underlying value
             "session": past_paper.session.value,  # Enum values need to be converted to their underlying value
             "semester": past_paper.semester.value,  # Enum values need to be converted to their underlying value
             "date": past_paper.date.isoformat(),  # Convert the date object to a string
@@ -47,7 +47,7 @@ async def get_pastpaper(request: Request, pastpaper_id: str) -> JSONResponse:
         pastpaper_data = {
             "id": past_paper.id,
             "year": past_paper.year,
-            "type": past_paper.type.value,  # Convert Enum to its value
+            "paper_type": past_paper.type.value,  # Convert Enum to its value
             "session": past_paper.session.value,  # Convert Enum to its value
             "semester": past_paper.semester.value,  # Convert Enum to its value
             "date": past_paper.date.isoformat(),  # Convert date object to ISO format
@@ -100,7 +100,7 @@ async def add_pastpaper(
     return {
         "id": past_paper.id,
         "year": past_paper.year,
-        "type": past_paper.type,
+        "paper_type": past_paper.type,
         "session": past_paper.session,
         "semester": past_paper.semester,
         "date": past_paper.date,
@@ -118,7 +118,7 @@ async def get_pastpapers_by_subject(request: Request, subject_id: str) -> JSONRe
         pastpapers_data = [{
             "id": past_paper.id,
             "year": past_paper.year,
-            "type": past_paper.type.value,  # Convert Enum to its value
+            "paper_type": past_paper.type.value,  # Convert Enum to its value
             "session": past_paper.session.value,  # Convert Enum to its value
             "semester": past_paper.semester.value,  # Convert Enum to its value
             "date": past_paper.date.isoformat(),  # Convert date object to ISO format
